@@ -26,13 +26,6 @@ interface Education {
   icon: React.ReactNode;
 }
 
-interface SocialLink {
-  name: string;
-  icon: React.ComponentType<{ className?: string }>;
-  url: string;
-  color: string;
-}
-
 const App = () => {
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
   const [isVisible, setIsVisible] = useState<Record<string, boolean>>({});
@@ -72,11 +65,12 @@ const App = () => {
     }
   ];
 
-  const socialLinks: SocialLink[] = [
+<div className="space-y-4">
+  {[
     {
       name: 'LinkedIn',
       icon: Linkedin,
-      url: 'https://www.linkedin.com/in/tarun-inti-/',
+      url: 'https://linkedin.com/in/tarun-inti-',
       color: 'bg-blue-600 hover:bg-blue-700'
     },
     {
@@ -88,10 +82,32 @@ const App = () => {
     {
       name: 'YouTube',
       icon: ExternalLink,
-      url: 'https://youtube.com',
+      url: '#',
       color: 'bg-red-600 hover:bg-red-700'
     }
-  ];
+  ].map((social, index) => (
+    <motion.a
+      key={social.name}
+      href={social.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: 0.2 * index }}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      className={`flex items-center space-x-4 w-full p-4 ${social.color} bg-opacity-90 hover:bg-opacity-100 rounded-lg transition-all duration-300 group`}
+    >
+      <div className="p-2 bg-black bg-opacity-30 rounded-lg">
+        <social.icon className="w-5 h-5" />
+      </div>
+      <span className="font-semibold">{social.name}</span>
+      <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <ExternalLink className="w-4 h-4" />
+      </div>
+    </motion.a>
+  ))}
+</div>
 
   // Typewriter effect for role
   useEffect(() => {
